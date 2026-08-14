@@ -3,16 +3,130 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hand Maze Game Web</title>
+    <title>Hand Maze Game</title>
     <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   </head>
   <body>
     <div id="app">
       <video id="webcam" autoplay playsinline style="display:none;"></video>
       <canvas id="output_canvas"></canvas>
+      
       <div id="ui-layer">
-        <!-- Screens will be injected here by JS -->
+        <!-- Start Screen -->
+        <div id="screen-start" class="screen active">
+          <div class="screen-header">START SCREEN</div>
+          <h1 class="title-main">HAND MAZE</h1>
+          <h2 class="title-sub">GESTURE ADVENTURE</h2>
+          <div class="hand-icon-large">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0a2 2 0 0 0-2 2v3"/><path d="M5 14v-2a2 2 0 0 1 2-2h0"/><path d="M5 14c0 3 2 5.5 5 7h4c3 0 5-3 5-7v-3"/></svg>
+          </div>
+          <p class="instruction-text">SHOW ONE HAND TO BEGIN</p>
+          <button class="btn btn-outline" id="btn-start-game">&gt; START GAME</button>
+          <div class="footer-text">Thumb Down to QUIT</div>
+        </div>
+
+        <!-- Login Screen -->
+        <div id="screen-login" class="screen">
+          <div class="screen-header">NAME ENTRY</div>
+          <h1 class="title-purple">READY, PLAYER?</h1>
+          <p class="subtitle">Enter Your Name</p>
+          <div class="input-container">
+            <span class="input-icon">O</span>
+            <input type="text" id="player-name" placeholder="type here..." value="ANKIT">
+          </div>
+          <button class="btn btn-outline" id="btn-continue">&gt; CONTINUE</button>
+          <div class="footer-text">Thumb Down to GO BACK</div>
+        </div>
+
+        <!-- Menu Screen -->
+        <div id="screen-menu" class="screen">
+          <div class="screen-header">MAIN MENU</div>
+          <p class="subtitle">WELCOME BACK,</p>
+          <h1 class="title-blue" id="menu-player-name">ANKIT</h1>
+          <div class="menu-buttons">
+            <button class="btn btn-outline btn-large" id="btn-play-game">
+              <div class="btn-title">&gt; PLAY GAME</div>
+              <div class="btn-sub">Start a new maze</div>
+            </button>
+            <div class="btn-row">
+              <button class="btn btn-blue" id="btn-how-to-play">? HOW TO PLAY</button>
+              <button class="btn btn-orange" id="btn-high-scores">* HIGH SCORES</button>
+              <button class="btn btn-red" id="btn-quit">x QUIT</button>
+            </div>
+          </div>
+          <div class="footer-text">Pinch & hold on a button for 1 sec</div>
+        </div>
+
+        <!-- How To Play -->
+        <div id="screen-how-to-play" class="screen">
+          <div class="screen-header">HOW TO PLAY</div>
+          <h1 class="title-purple">HOW TO PLAY</h1>
+          <ul class="rules-list">
+            <li><span class="rule-num">1</span> <span class="rule-text green">Show ONE hand to the camera.</span></li>
+            <li><span class="rule-num">2</span> <span class="rule-text green">Pinch thumb + index finger to control.</span></li>
+            <li><span class="rule-num">3</span> <span class="rule-text purple">Thumb Down to go BACK (ESC).</span></li>
+            <li><span class="rule-num">4</span> <span class="rule-text blue">Reach the BLUE cell to win!</span></li>
+          </ul>
+          <div class="footer-text">Thumb Down to GO BACK</div>
+        </div>
+
+        <!-- Game HUD -->
+        <div id="screen-game" class="game-hud">
+          <!-- Top Bar -->
+          <div class="hud-topbar">
+            <div class="hud-stat"><div class="stat-label">PLAYER</div><div class="stat-value" id="hud-player">ANKIT</div></div>
+            <div class="hud-stat"><div class="stat-label">SCORE</div><div class="stat-value green-text" id="hud-score">0</div></div>
+            <div class="hud-stat"><div class="stat-label">TIME</div><div class="stat-value orange-text" id="hud-time">00:00</div></div>
+            <div class="hud-stat"><div class="stat-label">BEST TIME</div><div class="stat-value orange-text" id="hud-best">--</div></div>
+            <div class="hud-stat"><div class="stat-label">STATUS</div><div class="stat-value green-text" id="hud-status">PINCH ACTIVE</div></div>
+            <div class="hud-controls">
+              <div>[R] RESTART</div>
+              <div>ESC/Thumb Down MENU</div>
+            </div>
+          </div>
+
+          <!-- Left Sidebar -->
+          <div class="hud-left">
+            <div class="hud-panel">
+              <div class="panel-header">HAND STATUS</div>
+              <div class="hand-icon-small">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2ecc71" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              </div>
+              <div class="panel-footer green-text">CONTROL MODE</div>
+            </div>
+          </div>
+
+          <!-- Right Sidebar -->
+          <div class="hud-right">
+            <div class="hud-panel options-panel">
+              <div class="panel-header">OPTIONS</div>
+              <button class="opt-btn" id="opt-cam">CAM ON/OFF</button>
+              <button class="opt-btn" id="opt-fs">FULLSCREEN</button>
+              <button class="opt-btn" id="opt-op-plus">OPACITY +</button>
+              <button class="opt-btn" id="opt-op-minus">OPACITY -</button>
+              <div class="opt-status">Opacity: 35%<br>CAM: ON</div>
+            </div>
+          </div>
+
+          <!-- Bottom Bar -->
+          <div class="hud-bottom">
+            <div class="bottom-stat">MOVE FORWARD <span class="green-text">+1</span></div>
+            <div class="bottom-stat">MOVE BACKWARD <span class="red-text">-1</span></div>
+            <div class="bottom-stat">REACH GOAL <span class="blue-text">WIN</span></div>
+          </div>
+        </div>
+
       </div>
+      
+      <!-- Thumb down progress overlay -->
+      <div id="thumb-down-overlay">
+        <div class="td-text">Hold Thumb Down...</div>
+        <div class="td-progress">
+          <div class="td-bar" id="td-bar"></div>
+        </div>
+      </div>
+      
     </div>
     <script type="module" src="/main.js"></script>
   </body>

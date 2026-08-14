@@ -57,9 +57,15 @@ export class HandTracker {
       }
       this.prevPos = smoothedPos;
 
+      // Thumb down detection (Y increases downwards)
+      // Wrist is landmark 0. If thumb tip Y is much greater than wrist Y, thumb is down.
+      const wrist = landmarks[0];
+      const thumbDown = thumbTip.y > wrist.y + 0.1;
+
       return {
         pos: smoothedPos,
         pinchActive,
+        thumbDown,
         landmarks: landmarks // for drawing
       };
     }
