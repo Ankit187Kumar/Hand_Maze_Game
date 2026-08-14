@@ -107,7 +107,7 @@ let lastMoveTime = 0;
 function updateHUD() {
   document.getElementById('hud-score').innerText = score;
   document.getElementById('hud-best').innerText = bestTime ? bestTime.toFixed(1) + 's' : '--';
-  document.querySelector('.opt-status').innerHTML = \`Opacity: \${Math.round(camOpacity * 100)}%<br>CAM: \${isCamOn ? 'ON' : 'OFF'}\`;
+  document.querySelector('.opt-status').innerHTML = `Opacity: ${Math.round(camOpacity * 100)}%<br>CAM: ${isCamOn ? 'ON' : 'OFF'}`;
 }
 
 function gameLoop() {
@@ -129,7 +129,7 @@ function gameLoop() {
       const elapsed = Math.floor((performance.now() - startTime) / 1000);
       const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
       const s = String(elapsed % 60).padStart(2, '0');
-      document.getElementById('hud-time').innerText = \`\${m}:\${s}\`;
+      document.getElementById('hud-time').innerText = `${m}:${s}`;
     }
   }
 
@@ -172,7 +172,7 @@ function gameLoop() {
       const progress = Math.min(100, (holdTime / THUMB_DOWN_HOLD_MS) * 100);
       
       tdOverlay.style.display = 'flex';
-      tdBar.style.width = \`\${progress}%\`;
+      tdBar.style.width = `${progress}%`;
 
       if (progress >= 100) {
         thumbDownStart = null;
@@ -215,7 +215,7 @@ function gameLoop() {
               if (playerCell.r === maze.endCell.r && playerCell.c === maze.endCell.c) {
                 const finalTime = (performance.now() - startTime) / 1000;
                 if (!bestTime || finalTime < bestTime) bestTime = finalTime;
-                alert(\`YOU WIN! Score: \${score}, Time: \${finalTime.toFixed(1)}s\`);
+                alert(`YOU WIN! Score: ${score}, Time: ${finalTime.toFixed(1)}s`);
                 switchState('MENU');
               }
             }
