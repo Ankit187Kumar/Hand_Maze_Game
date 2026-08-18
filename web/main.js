@@ -338,6 +338,11 @@ function setupButtons() {
     updateHUD();
   };
 
+  const fsBtn = document.getElementById('opt-fs');
+  if (fsBtn) {
+    fsBtn.onclick = () => toggleFullscreen();
+  }
+
   document.getElementById('opt-op-plus').onclick = () => {
     camOpacity = Math.min(1.0, camOpacity + 0.1);
     updateHUD();
