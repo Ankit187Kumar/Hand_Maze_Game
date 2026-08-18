@@ -98,35 +98,65 @@
           <div class="footer-text">Thumb Down to GO BACK</div>
         </div>
 
-        <!-- Win Screen -->
-        <div id="screen-win" class="screen" style="position: relative; overflow: hidden; max-width: 620px;">
-          <div class="screen-header">VICTORY SCREEN</div>
-          <div class="win-trophy">
-            <svg viewBox="0 0 24 24" fill="#f1c40f" stroke="#d4ac0d" stroke-width="1.5"><path d="M6 9V2h12v7c0 3.3-2.7 6-6 6s-6-2.7-6-6z"/><path d="M6 5H3c0 2.2 1.8 4 4 4"/><path d="M18 5h3c0 2.2-1.8 4-4 4"/><path d="M12 15v4"/><path d="M8 22h8v-3H8v3z"/></svg>
-          </div>
-          <h1 class="win-title-animated">YOU WIN!</h1>
-          <div id="win-new-record" class="win-badge" style="display:none;">NEW BEST TIME RECORD!</div>
+        <!-- Win Screen (Matches exact original layout) -->
+        <div id="screen-win" class="screen win-screen-card">
+          <div class="screen-header">YOU WIN SCREEN</div>
           
-          <div class="win-stats-grid">
-            <div class="win-stat-box">
-              <div class="ws-label">TIME TAKEN</div>
-              <div class="ws-val orange-text" id="win-time">00:00</div>
+          <div class="win-layout-row">
+            <!-- Left Emblem with Concentric Rings -->
+            <div class="win-left-emblem">
+              <div class="trophy-rings">
+                <div class="t-ring ring-1"></div>
+                <div class="t-ring ring-2"></div>
+                <div class="t-ring ring-3"></div>
+                <div class="trophy-cup-svg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#d49a38" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9V2h12v7c0 3.3-2.7 6-6 6s-6-2.7-6-6z"/>
+                    <path d="M6 5H3c0 2.2 1.8 4 4 4"/>
+                    <path d="M18 5h3c0 2.2-1.8 4-4 4"/>
+                    <path d="M12 15v4"/>
+                    <path d="M8 22h8v-3H8v3z"/>
+                  </svg>
+                </div>
+              </div>
             </div>
-            <div class="win-stat-box">
-              <div class="ws-label">BEST TIME</div>
-              <div class="ws-val green-text" id="win-best-time">--</div>
-            </div>
-            <div class="win-stat-box">
-              <div class="ws-label">MAZE MOVES</div>
-              <div class="ws-val blue-text" id="win-score">0</div>
+
+            <!-- Right Content Area -->
+            <div class="win-right-content">
+              <h1 class="win-title-rainbow">YOU WIN!</h1>
+              <div class="win-divider-line"></div>
+              
+              <div class="win-stats-table">
+                <div class="ws-row">
+                  <span class="ws-key">PLAYER</span>
+                  <span class="ws-val orange-text" id="win-player">ANKIT</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-key">SCORE</span>
+                  <span class="ws-val green-text" id="win-score">25</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-key">TIME</span>
+                  <span class="ws-val blue-text" id="win-time">00:35</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-key">BEST SCORE</span>
+                  <span class="ws-val" style="color:#786e64;" id="win-best-score">59</span>
+                </div>
+                <div class="ws-row">
+                  <span class="ws-key">BEST TIME</span>
+                  <span class="ws-val" style="color:#786e64;" id="win-best-time">7.4s</span>
+                </div>
+              </div>
+
+              <div class="btn-row win-btn-row">
+                <button class="btn btn-outline" id="btn-play-again">@ PLAY AGAIN</button>
+                <button class="btn btn-purple" id="btn-win-menu">~ MAIN MENU</button>
+              </div>
             </div>
           </div>
-          
-          <div class="btn-row" style="margin-top: 20px; width: 100%; max-width: 440px;">
-            <button class="btn btn-outline" id="btn-play-again" style="flex:1;">@ PLAY AGAIN</button>
-            <button class="btn btn-red" id="btn-win-menu" style="flex:1;">~ MAIN MENU</button>
-          </div>
-          <div class="footer-text">[ SPACE ] Play Again | Thumb Down MENU</div>
+
+          <div class="footer-text" style="margin-top: 15px;">[ SPACE ] Play Again &nbsp;&nbsp;&nbsp;&nbsp; [ Thumb Down ] Main Menu</div>
         </div>
 
         <!-- Game HUD -->

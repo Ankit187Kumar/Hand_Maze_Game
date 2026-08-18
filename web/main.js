@@ -82,6 +82,69 @@ function getBestTime() {
   return null;
 }
 
+// Floating Bubbles Background (Matches Python draw_star_bg)
+class FloatingBubble {
+  constructor(w, h) {
+    this.w = w;
+    this.h = h;
+    this.r = Math.random() * 50 + 35;
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
+    this.vx = (Math.random() - 0.5) * 0.7;
+    this.vy = (Math.random() - 0.5) * 0.7;
+    const colors = [
+      'rgba(245, 220, 220, 0.55)',
+      'rgba(220, 245, 220, 0.55)',
+      'rgba(220, 235, 245, 0.55)',
+      'rgba(245, 245, 220, 0.55)',
+      'rgba(235, 220, 245, 0.55)'
+    ];
+    this.color = colors[Math.floor(Math.random() * colors.length)];
+  }
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    if (this.x - this.r < 0 || this.x + this.r > this.w) this.vx *= -1;
+    if (this.y - this.r < 0 || this.y + this.r > this.h) this.vy *= -1;
+  }
+  draw(bCtx) {
+    bCtx.beginPath();
+    bCtx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    bCtx.fillStyle = this.color;
+    bCtx.fill();
+  }
+}
+
+let bubblesPool = [];
+function initBubbles(count = 16) {
+  bubblesPool = [];
+  for (let i = 0; i < count; i++) {
+    bubblesPool.push(new FloatingBubble(CONFIG.CAMERA_WIDTH, CONFIG.CAMERA_HEIGHT));
+  }
+}
+
+function drawStarBackground(bgCtx) {
+  bgCtx.fillStyle = '#F8F9FA';
+  bgCtx.fillRect(0, 0, CONFIG.CAMERA_WIDTH, CONFIG.CAMERA_HEIGHT);
+
+  // Dot grid
+  bgCtx.fillStyle = '#E8E3DE';
+  const gridGap = 40;
+  for (let x = gridGap; x < CONFIG.CAMERA_WIDTH; x += gridGap) {
+    for (let y = gridGap; y < CONFIG.CAMERA_HEIGHT; y += gridGap) {
+      bgCtx.beginPath();
+      bgCtx.arc(x, y, 1.5, 0, Math.PI * 2);
+      bgCtx.fill();
+    }
+  }
+
+  // Floating bubbles
+  for (const b of bubblesPool) {
+    b.update();
+    b.draw(bgCtx);
+  }
+}
+
 // Confetti & Sparkles Particle System
 class ConfettiParticle {
   constructor(w, h, burst = false) {
@@ -91,16 +154,16 @@ class ConfettiParticle {
   }
 
   reset(burst = false) {
-    this.x = burst ? this.w_bounds / 2 + (Math.random() * 200 - 100) : Math.random() * this.w_bounds;
-    this.y = burst ? this.h_bounds / 2 + (Math.random() * 100 - 50) : Math.random() * -this.h_bounds;
-    this.size = Math.random() * 8 + 5;
-    this.vx = (Math.random() - 0.5) * (burst ? 8 : 3);
-    this.vy = burst ? -(Math.random() * 6 + 4) : Math.random() * 3 + 2.5;
+    this.x = burst ? this.w_bounds / 2 + (Math.random() * 400 - 200) : Math.random() * this.w_bounds;
+    this.y = burst ? this.h_bounds / 2 + (Math.random() * 200 - 100) : Math.random() * -this.h_bounds;
+    this.size = Math.random() * 9 + 5;
+    this.vx = (Math.random() - 0.5) * (burst ? 9 : 3.5);
+    this.vy = burst ? -(Math.random() * 7 + 4) : Math.random() * 3.5 + 2.5;
     this.rot = Math.random() * 360;
-    this.vrot = (Math.random() - 0.5) * 10;
-    this.colors = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c'];
+    this.vrot = (Math.random() - 0.5) * 12;
+    this.colors = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c', '#e91e63'];
     this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
-    this.shape = Math.random() > 0.4 ? 'rect' : (Math.random() > 0.5 ? 'circle' : 'star');
+    this.shape = Math.random() > 0.4 ? 'rect' : (Math.random() > 0.4 ? 'circle' : 'star');
   }
 
   update() {
@@ -141,7 +204,7 @@ class ConfettiParticle {
 }
 
 let confettiPool = [];
-function initConfetti(count = 90) {
+function initConfetti(count = 120) {
   confettiPool = [];
   for (let i = 0; i < count; i++) {
     confettiPool.push(new ConfettiParticle(CONFIG.CAMERA_WIDTH, CONFIG.CAMERA_HEIGHT, true));
@@ -186,6 +249,7 @@ function toggleFullscreen() {
 
 async function init() {
   loadLeaderboard();
+  initBubbles(18);
 
   video = document.getElementById('webcam');
   canvas = document.getElementById('output_canvas');
@@ -438,16 +502,28 @@ function handleWin() {
   leaderboard.sort((a, b) => a.time - b.time);
   saveLeaderboard();
 
-  // Display Win Board details
+  // Display Win Board details matching Python layout
   const m = String(Math.floor(finalTimeSec / 60)).padStart(2, '0');
   const s = String(Math.floor(finalTimeSec % 60)).padStart(2, '0');
-  document.getElementById('win-time').innerText = `${m}:${s} (${finalTimeSec.toFixed(1)}s)`;
-  document.getElementById('win-best-time').innerText = leaderboard[0].time.toFixed(1) + 's';
-  document.getElementById('win-score').innerText = score;
-
-  const recordBadge = document.getElementById('win-new-record');
-  if (recordBadge) {
-    recordBadge.style.display = isNewRecord ? 'inline-block' : 'none';
+  
+  const pEl = document.getElementById('win-player');
+  if (pEl) pEl.innerText = playerName.toUpperCase();
+  
+  const scEl = document.getElementById('win-score');
+  if (scEl) scEl.innerText = score;
+  
+  const tEl = document.getElementById('win-time');
+  if (tEl) tEl.innerText = `${m}:${s}`;
+  
+  const bestScEl = document.getElementById('win-best-score');
+  if (bestScEl) {
+    const highestScore = Math.max(...leaderboard.map(item => item.score || 0), score);
+    bestScEl.innerText = highestScore;
+  }
+  
+  const bestTimeEl = document.getElementById('win-best-time');
+  if (bestTimeEl) {
+    bestTimeEl.innerText = leaderboard[0].time.toFixed(1) + 's';
   }
 
   switchState('WIN');
@@ -535,19 +611,19 @@ function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
 
-  // Background camera feed
-  if (isCamOn && video.readyState === 4) {
+  if (gameState === 'WIN') {
+    // Draw animated floating bubbles and grid background
+    drawStarBackground(ctx);
+    // Draw continuous confetti & sparkles in a loop
+    updateAndDrawConfetti(cursorCtx);
+  } else if (isCamOn && video.readyState === 4) {
+    // Background camera feed with opacity
     ctx.save();
     ctx.globalAlpha = camOpacity;
     ctx.translate(canvas.width, 0);
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.restore();
-  }
-
-  // Draw Win screen celebratory sparkling confetti
-  if (gameState === 'WIN') {
-    updateAndDrawConfetti(cursorCtx);
   }
 
   // Draw maze & HUD time in game mode
