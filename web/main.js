@@ -65,7 +65,12 @@ async function init() {
 function setupButtons() {
   document.getElementById('btn-start-game').onclick = () => switchState('LOGIN');
   document.getElementById('btn-continue').onclick = () => {
-    playerName = document.getElementById('player-name').value || 'PLAYER';
+    const inputVal = document.getElementById('player-name').value.trim();
+    if (!inputVal) {
+      alert("Please enter a name before continuing!");
+      return;
+    }
+    playerName = inputVal;
     document.getElementById('menu-player-name').innerText = playerName.toUpperCase();
     document.getElementById('hud-player').innerText = playerName.toUpperCase();
     switchState('MENU');
