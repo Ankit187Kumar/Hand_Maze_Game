@@ -20,6 +20,8 @@ CONFIG.MAZE_OFFSET_Y = 150;
 let video;
 let canvas;
 let ctx;
+let cursorCanvas;
+let cursorCtx;
 let handTracker;
 let maze;
 let gameState = 'START';
@@ -43,6 +45,11 @@ async function init() {
   ctx = canvas.getContext('2d');
   canvas.width = CONFIG.CAMERA_WIDTH;
   canvas.height = CONFIG.CAMERA_HEIGHT;
+
+  cursorCanvas = document.getElementById('cursor_canvas');
+  cursorCtx = cursorCanvas.getContext('2d');
+  cursorCanvas.width = CONFIG.CAMERA_WIDTH;
+  cursorCanvas.height = CONFIG.CAMERA_HEIGHT;
 
   setupButtons();
   switchState('START');
@@ -117,6 +124,7 @@ function updateHUD() {
 
 function gameLoop() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
 
   if (isCamOn && video.readyState === 4) {
     ctx.save();
@@ -142,25 +150,25 @@ function gameLoop() {
   
   if (handInfo) {
     if (isCamOn) {
-      handTracker.drawLandmarks(ctx, handInfo.landmarks, canvas.width, canvas.height);
+      handTracker.drawLandmarks(cursorCtx, handInfo.landmarks, cursorCanvas.width, cursorCanvas.height);
     }
     
     // Draw cursor
-    ctx.fillStyle = handInfo.pinchActive ? '#2ecc71' : '#3498db';
-    ctx.beginPath();
-    ctx.arc(handInfo.pos.x, handInfo.pos.y, 10, 0, Math.PI*2);
-    ctx.fill();
+    cursorCtx.fillStyle = handInfo.pinchActive ? '#2ecc71' : '#3498db';
+    cursorCtx.beginPath();
+    cursorCtx.arc(handInfo.pos.x, handInfo.pos.y, 10, 0, Math.PI*2);
+    cursorCtx.fill();
 
     // Line to player if in game
     if (gameState === 'GAME' && handInfo.pinchActive) {
       const pCx = CONFIG.MAZE_OFFSET_X + playerCell.c * CONFIG.MAZE_CELL_SIZE + CONFIG.MAZE_CELL_SIZE/2;
       const pCy = CONFIG.MAZE_OFFSET_Y + playerCell.r * CONFIG.MAZE_CELL_SIZE + CONFIG.MAZE_CELL_SIZE/2;
-      ctx.strokeStyle = 'rgba(120, 110, 100, 0.5)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(handInfo.pos.x, handInfo.pos.y);
-      ctx.lineTo(pCx, pCy);
-      ctx.stroke();
+      cursorCtx.strokeStyle = 'rgba(120, 110, 100, 0.5)';
+      cursorCtx.lineWidth = 2;
+      cursorCtx.beginPath();
+      cursorCtx.moveTo(handInfo.pos.x, handInfo.pos.y);
+      cursorCtx.lineTo(pCx, pCy);
+      cursorCtx.stroke();
     }
 
     if (gameState === 'GAME') {
