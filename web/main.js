@@ -223,10 +223,7 @@ function updateAndDrawConfetti(cCtx) {
 function toggleFullscreen() {
   const isFull = document.body.classList.toggle('app-full-screen');
   const fsBtn = document.getElementById('opt-fs');
-  const globalFsBtn = document.getElementById('btn-global-fs');
-  const label = isFull ? '🗗 WINDOWED' : '⛶ FULLSCREEN';
   if (fsBtn) fsBtn.innerText = isFull ? 'WINDOWED' : 'FULLSCREEN';
-  if (globalFsBtn) globalFsBtn.innerText = label;
 
   const elem = document.documentElement;
   // Try native browser fullscreen if allowed by user activation
@@ -335,12 +332,6 @@ function setupButtons() {
 
   document.getElementById('btn-win-menu').onclick = () => switchState('MENU');
   
-  // Global Top-Right Fullscreen Button
-  const globalFs = document.getElementById('btn-global-fs');
-  if (globalFs) {
-    globalFs.onclick = () => toggleFullscreen();
-  }
-
   // Options Panel Buttons
   document.getElementById('opt-cam').onclick = () => {
     isCamOn = !isCamOn;
@@ -578,8 +569,8 @@ function updateGestureButtons(handPos, pinchActive) {
   const screenX = (handPos.x / canvas.width) * window.innerWidth;
   const screenY = (handPos.y / canvas.height) * window.innerHeight;
 
-  // Find all active interactive buttons on screen (including global fullscreen button)
-  const buttons = Array.from(document.querySelectorAll('.screen.active .btn, .game-hud.active .opt-btn, #btn-global-fs'));
+  // Find all active interactive buttons on screen
+  const buttons = Array.from(document.querySelectorAll('.screen.active .btn, .game-hud.active .opt-btn'));
   let currentlyHovered = null;
 
   for (const btn of buttons) {

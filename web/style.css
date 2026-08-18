@@ -49,33 +49,6 @@ body.app-full-screen #app {
   pointer-events: none;
 }
 
-/* Global Fullscreen Button (Top-Right) */
-.btn-global-fs {
-  position: absolute;
-  top: 22px;
-  right: 35px;
-  z-index: 50;
-  pointer-events: auto;
-  border: 1.5px solid #2b59ff !important;
-  color: #2b59ff !important;
-  border-radius: 8px !important;
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
-  padding: 8px 18px !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 4px 14px rgba(43, 89, 255, 0.12) !important;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-.btn-global-fs:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(43, 89, 255, 0.22) !important;
-}
-.btn-global-fs .btn-progress {
-  background: rgba(43, 89, 255, 0.25) !important;
-  border-bottom: 3px solid #2b59ff !important;
-}
-
 /* Background Decorations (Waves, Corner Dots, Orbs) */
 .bg-decorations {
   position: absolute;
