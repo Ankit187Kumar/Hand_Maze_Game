@@ -14,17 +14,29 @@
       <canvas id="cursor_canvas"></canvas>
       
       <div id="ui-layer">
-        <!-- Start Screen -->
-        <div id="screen-start" class="screen active">
+        <!-- Start Screen (Matches exact uploaded design) -->
+        <div id="screen-start" class="screen start-screen-card active">
           <div class="screen-header">START SCREEN</div>
-          <h1 class="title-main">HAND MAZE</h1>
-          <h2 class="title-sub">GESTURE ADVENTURE</h2>
-          <div class="hand-icon-large">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0a2 2 0 0 0-2 2v3"/><path d="M5 14v-2a2 2 0 0 1 2-2h0"/><path d="M5 14c0 3 2 5.5 5 7h4c3 0 5-3 5-7v-3"/></svg>
+          <h1 class="start-title-main">HAND MAZE</h1>
+          <h2 class="start-title-sub">GESTURE ADVENTURE</h2>
+          <div class="start-dot-divider"></div>
+          
+          <div class="start-hand-avatar">
+            <svg viewBox="0 0 100 100" class="hand-palm-svg">
+              <defs>
+                <linearGradient id="handSkin" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#ffccaa"/>
+                  <stop offset="100%" stop-color="#e0956b"/>
+                </linearGradient>
+              </defs>
+              <!-- Palm & 5 Fingers SVG representation -->
+              <path d="M30 55 C22 45 15 48 18 36 C20 28 28 32 34 42 L34 22 C34 16 41 16 41 22 L41 40 L43 14 C43 8 50 8 50 14 L50 39 L52 17 C52 11 59 11 59 17 L59 42 L61 27 C61 22 68 22 68 27 L68 55 C68 75 60 88 48 88 C36 88 30 75 30 55 Z" fill="url(#handSkin)" stroke="#c47d54" stroke-width="1.5" stroke-linejoin="round"/>
+            </svg>
           </div>
-          <p class="instruction-text">SHOW ONE HAND TO BEGIN</p>
-          <button class="btn btn-outline" id="btn-start-game">&gt; START GAME</button>
-          <div class="footer-text">Thumb Down to QUIT</div>
+
+          <p class="start-instruction">SHOW ONE HAND TO BEGIN</p>
+          <button class="btn btn-blue-outline" id="btn-start-game">&gt; START GAME</button>
+          <div class="start-footer-text">Thumb Down to QUIT</div>
         </div>
 
         <!-- Login Screen -->
@@ -74,8 +86,8 @@
         </div>
 
         <!-- High Scores / Leaderboard -->
-        <div id="screen-high-scores" class="screen" style="max-width: 680px; width: 90%;">
-          <div class="screen-header">LEADERBOARD (FASTEST PLAYERS)</div>
+        <div id="screen-high-scores" class="screen" style="max-width: 720px; width: 90%;">
+          <div class="screen-header">LEADERBOARD</div>
           <h1 class="title-purple" style="font-size:2.5rem; margin-bottom: 5px;">TIME LEADERBOARD</h1>
           <p style="font-size: 0.95rem; color: #777; margin-bottom: 15px;">Ranked by fastest completion time (Lowest time = #1 Rank)</p>
           
@@ -85,6 +97,7 @@
                 <tr style="border-bottom: 2px solid #e1dcd7; color: #8c8278; font-size: 0.8rem;">
                   <th style="padding: 8px;">RANK</th>
                   <th style="padding: 8px;">PLAYER</th>
+                  <th style="padding: 8px;">SCORE</th>
                   <th style="padding: 8px;">TIME (FASTEST)</th>
                   <th style="padding: 8px;">DATE</th>
                 </tr>

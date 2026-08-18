@@ -100,73 +100,98 @@ body.app-full-screen #app {
   letter-spacing: 1px;
 }
 
-.title-main {
+/* Start Screen Card (Matches exact uploaded screenshot) */
+.start-screen-card {
+  max-width: 580px !important;
+  width: 90% !important;
+  border-radius: 24px !important;
+  padding: 45px 40px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  border: 1.5px solid #eef2f6 !important;
+  background: #ffffff !important;
+}
+
+.start-title-main {
   font-family: 'Montserrat', sans-serif;
-  font-size: 4rem;
-  font-weight: 800;
-  color: #3498db;
-  margin-top: 20px;
+  font-size: 3.8rem;
+  font-weight: 900;
+  color: #2b59ff;
+  letter-spacing: 0.5px;
   line-height: 1;
+  margin-top: 10px;
 }
 
-.title-sub {
-  font-size: 1.5rem;
-  color: #9b59b6;
-  font-weight: 700;
-  margin-bottom: 20px;
-}
-
-.title-purple {
+.start-title-sub {
   font-family: 'Montserrat', sans-serif;
-  font-size: 3rem;
+  font-size: 1.35rem;
   font-weight: 800;
-  color: #9b59b6;
-  margin-top: 20px;
+  color: #8a4af3;
+  letter-spacing: 1.5px;
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 
-.title-blue {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 3rem;
-  font-weight: 800;
-  color: #3498db;
-}
-
-.subtitle {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #555;
-  margin-bottom: 10px;
-}
-
-.instruction-text {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #555;
-  margin: 20px 0;
-}
-
-.hand-icon-large {
-  width: 150px;
-  height: 150px;
+.start-dot-divider {
+  width: 7px;
+  height: 7px;
+  background-color: #2b59ff;
   border-radius: 50%;
-  border: 2px solid #eee;
+  margin: 14px auto 22px;
+}
+
+.start-hand-avatar {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f0f7ff 0%, #e0effe 100%);
+  border: 2px solid #dbeafe;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  margin: 0 auto 24px;
 }
 
-.hand-icon-large svg {
+.hand-palm-svg {
   width: 80px;
   height: 80px;
-  color: #333;
+}
+
+.start-instruction {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #475569;
+  letter-spacing: 0.5px;
+  margin-bottom: 22px;
+}
+
+.btn-blue-outline {
+  border: 2.5px solid #2b59ff !important;
+  color: #2b59ff !important;
+  border-radius: 12px !important;
+  font-size: 1.15rem !important;
+  font-weight: 800 !important;
+  padding: 14px 45px !important;
+  background: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(43, 89, 255, 0.12) !important;
+}
+.btn-blue-outline .btn-progress {
+  background: rgba(43, 89, 255, 0.22) !important;
+  border-bottom: 4px solid #2b59ff !important;
+}
+
+.start-footer-text {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-top: 24px;
 }
 
 .footer-text {
   font-size: 0.9rem;
   font-weight: 700;
   color: #888;
-  margin-top: 40px;
+  margin-top: 30px;
 }
 
 /* Buttons */

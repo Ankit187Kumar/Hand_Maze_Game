@@ -395,13 +395,14 @@ function setupKeyboard() {
 
 function updateHighScoresScreen() {
   const tbody = document.getElementById('leaderboard-rows');
+  if (!tbody) return;
   tbody.innerHTML = '';
 
-  // Sort by lowest time
+  // Sort by lowest time (Fastest completion)
   leaderboard.sort((a, b) => a.time - b.time);
 
   if (leaderboard.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color:#888;">No games completed yet. Be the first!</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px; color:#888;">No games completed yet. Be the first!</td></tr>';
     return;
   }
 
@@ -419,7 +420,8 @@ function updateHighScoresScreen() {
     tr.innerHTML = `
       <td><span class="${rankBadgeClass}">${medal}</span></td>
       <td><strong>${item.name.toUpperCase()}</strong> ${isCurrent ? '<span style="font-size:0.75rem; color:#2ecc71;">(You)</span>' : ''}</td>
-      <td class="green-text" style="font-weight:800;">${item.time.toFixed(1)}s ${index === 0 ? '⚡ (FASTEST)' : ''}</td>
+      <td class="green-text" style="font-weight:800; font-size:1.1rem;">${item.score !== undefined ? item.score : 0}</td>
+      <td class="blue-text" style="font-weight:800;">${item.time ? item.time.toFixed(1) + 's' : '--'} ${index === 0 ? '⚡ (FASTEST)' : ''}</td>
       <td style="color:#888; font-size:0.85rem;">${item.date || 'Today'}</td>
     `;
     tbody.appendChild(tr);
