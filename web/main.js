@@ -218,29 +218,32 @@ function updateAndDrawConfetti(cCtx) {
   }
 }
 
-// ── Fullscreen Support ──────────────────────────────────────────────────────
+// ── Fullscreen Support (Works with both Hand Gesture & Mouse) ─────────────────
 
 function toggleFullscreen() {
+  const isFull = document.body.classList.toggle('app-full-screen');
+  const fsBtn = document.getElementById('opt-fs');
+  if (fsBtn) {
+    fsBtn.innerText = isFull ? 'WINDOWED' : 'FULLSCREEN';
+  }
+
   const elem = document.documentElement;
-  if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
-    } else if (elem.webkitRequestFullscreen) {
-      elem.webkitRequestFullscreen();
-    } else if (elem.mozRequestFullScreen) {
-      elem.mozRequestFullScreen();
-    } else if (elem.msRequestFullscreen) {
-      elem.msRequestFullscreen();
+  // Try native browser fullscreen if allowed by user activation
+  if (isFull) {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen().catch(() => {});
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      }
     }
   } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen().catch(err => console.log('Exit fullscreen error:', err));
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      }
     }
   }
 }
