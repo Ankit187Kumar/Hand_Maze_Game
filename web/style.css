@@ -416,6 +416,112 @@ input[type="text"] {
 }
 
 /* Thumb Down Overlay */
+/* Win Celebration Screen Styling */
+.win-trophy {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+  animation: bounceTrophy 1.8s infinite ease-in-out;
+  filter: drop-shadow(0 0 16px rgba(241, 196, 15, 0.6));
+}
+
+@keyframes bounceTrophy {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.08); }
+}
+
+.win-title-animated {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 3.8rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #2ecc71, #f1c40f, #3498db, #9b59b6, #2ecc71);
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShine 3s linear infinite;
+  margin-bottom: 8px;
+}
+
+@keyframes rainbowShine {
+  to { background-position: 300% center; }
+}
+
+.win-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 6px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+  margin-bottom: 15px;
+  animation: pulseBadge 1.2s infinite ease-in-out;
+}
+
+@keyframes pulseBadge {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.win-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  width: 100%;
+  max-width: 480px;
+  margin: 15px 0;
+}
+
+.win-stat-box {
+  background: #fdfdfd;
+  border: 1px solid #e8e3de;
+  border-radius: 12px;
+  padding: 14px 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+}
+
+.ws-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #8c8278;
+  margin-bottom: 4px;
+}
+
+.ws-val {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+
+/* Leaderboard Table */
+.leaderboard-table th {
+  background: #f8f9fa;
+  font-weight: 800;
+}
+.leaderboard-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #f0ece8;
+  font-size: 0.95rem;
+}
+.leaderboard-table tr:hover {
+  background: #fbfbfb;
+}
+.rank-badge {
+  display: inline-flex;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 0.8rem;
+  background: #f0f0f0;
+}
+.rank-1 { background: #ffd700; color: #5c4300; }
+.rank-2 { background: #c0c0c0; color: #333; }
+.rank-3 { background: #cd7f32; color: #fff; }
+
+/* Thumb Down Overlay */
 #thumb-down-overlay {
   position: absolute;
   bottom: 60px;
@@ -448,3 +554,5 @@ input[type="text"] {
   background: #2ecc71;
   transition: width 0.1s linear;
 }
+
+

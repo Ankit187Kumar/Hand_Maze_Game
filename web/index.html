@@ -73,41 +73,56 @@
           <div class="footer-text">Thumb Down to GO BACK</div>
         </div>
 
-        <!-- High Scores -->
-        <div id="screen-high-scores" class="screen">
-          <div class="screen-header">HIGH SCORES</div>
-          <h1 class="title-purple">LEADERBOARD</h1>
-          <div style="margin: 25px 0; width: 100%; max-width: 400px; text-align: left;">
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
-              <span>PLAYER</span><span id="hs-player">ANKIT</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
-              <span>BEST SCORE</span><span class="green-text" id="hs-score">0</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
-              <span>BEST TIME</span><span class="orange-text" id="hs-time">--</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-weight: bold;">
-              <span>GAMES PLAYED</span><span class="blue-text" id="hs-games">0</span>
-            </div>
+        <!-- High Scores / Leaderboard -->
+        <div id="screen-high-scores" class="screen" style="max-width: 680px; width: 90%;">
+          <div class="screen-header">LEADERBOARD (FASTEST PLAYERS)</div>
+          <h1 class="title-purple" style="font-size:2.5rem; margin-bottom: 5px;">TIME LEADERBOARD</h1>
+          <p style="font-size: 0.95rem; color: #777; margin-bottom: 15px;">Ranked by fastest completion time (Lowest time = #1 Rank)</p>
+          
+          <div style="width: 100%; max-height: 260px; overflow-y: auto; margin-bottom: 20px;">
+            <table class="leaderboard-table" style="width:100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="border-bottom: 2px solid #e1dcd7; color: #8c8278; font-size: 0.8rem;">
+                  <th style="padding: 8px;">RANK</th>
+                  <th style="padding: 8px;">PLAYER</th>
+                  <th style="padding: 8px;">TIME (FASTEST)</th>
+                  <th style="padding: 8px;">DATE</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-rows">
+                <!-- Rows injected by JS -->
+              </tbody>
+            </table>
           </div>
           <button class="btn btn-outline" id="btn-back-hs">&lt; BACK TO MENU</button>
           <div class="footer-text">Thumb Down to GO BACK</div>
         </div>
 
         <!-- Win Screen -->
-        <div id="screen-win" class="screen">
-          <div class="screen-header">YOU WIN SCREEN</div>
-          <h1 class="title-main" style="color:#2ecc71; font-size:3.5rem;">YOU WIN!</h1>
-          <div style="margin: 20px 0; width: 100%; max-width: 400px; text-align: left;">
-            <div style="display:flex; justify-content:space-between; padding: 8px 0; font-size:1.2rem; font-weight: bold;">
-              <span>FINAL SCORE</span><span class="green-text" id="win-score">0</span>
+        <div id="screen-win" class="screen" style="position: relative; overflow: hidden; max-width: 620px;">
+          <div class="screen-header">VICTORY SCREEN</div>
+          <div class="win-trophy">
+            <svg viewBox="0 0 24 24" fill="#f1c40f" stroke="#d4ac0d" stroke-width="1.5"><path d="M6 9V2h12v7c0 3.3-2.7 6-6 6s-6-2.7-6-6z"/><path d="M6 5H3c0 2.2 1.8 4 4 4"/><path d="M18 5h3c0 2.2-1.8 4-4 4"/><path d="M12 15v4"/><path d="M8 22h8v-3H8v3z"/></svg>
+          </div>
+          <h1 class="win-title-animated">YOU WIN!</h1>
+          <div id="win-new-record" class="win-badge" style="display:none;">NEW BEST TIME RECORD!</div>
+          
+          <div class="win-stats-grid">
+            <div class="win-stat-box">
+              <div class="ws-label">TIME TAKEN</div>
+              <div class="ws-val orange-text" id="win-time">00:00</div>
             </div>
-            <div style="display:flex; justify-content:space-between; padding: 8px 0; font-size:1.2rem; font-weight: bold;">
-              <span>TIME TAKEN</span><span class="orange-text" id="win-time">00:00</span>
+            <div class="win-stat-box">
+              <div class="ws-label">BEST TIME</div>
+              <div class="ws-val green-text" id="win-best-time">--</div>
+            </div>
+            <div class="win-stat-box">
+              <div class="ws-label">MAZE MOVES</div>
+              <div class="ws-val blue-text" id="win-score">0</div>
             </div>
           </div>
-          <div class="btn-row" style="margin-top: 15px; width: 100%; max-width: 400px;">
+          
+          <div class="btn-row" style="margin-top: 20px; width: 100%; max-width: 440px;">
             <button class="btn btn-outline" id="btn-play-again" style="flex:1;">@ PLAY AGAIN</button>
             <button class="btn btn-red" id="btn-win-menu" style="flex:1;">~ MAIN MENU</button>
           </div>
@@ -144,11 +159,11 @@
           <div class="hud-right">
             <div class="hud-panel options-panel">
               <div class="panel-header">OPTIONS</div>
-              <button class="opt-btn" id="opt-cam">CAM ON/OFF</button>
+              <button class="opt-btn" id="opt-cam">USER PREVIEW</button>
               <button class="opt-btn" id="opt-fs">FULLSCREEN</button>
               <button class="opt-btn" id="opt-op-plus">OPACITY +</button>
               <button class="opt-btn" id="opt-op-minus">OPACITY -</button>
-              <div class="opt-status">Opacity: 35%<br>CAM: ON</div>
+              <div class="opt-status">Opacity: 35%<br>USER PREVIEW: ON</div>
             </div>
           </div>
 

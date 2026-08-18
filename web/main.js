@@ -44,34 +44,148 @@ let activeHoverBtn = null;
 let hoverStartTime = null;
 let gestureCooldownUntil = 0;
 
-// Local stats
-let stats = {
-  bestScore: 0,
-  bestTime: null,
-  gamesPlayed: 0
-};
+// Leaderboard & Stats (Time-Based: Lowest time = Rank 1)
+let leaderboard = [];
 
-function loadStats() {
+function loadLeaderboard() {
   try {
-    const saved = localStorage.getItem('hand_maze_stats');
+    const saved = localStorage.getItem('hand_maze_leaderboard');
     if (saved) {
-      stats = JSON.parse(saved);
+      leaderboard = JSON.parse(saved);
+      // Sort ascending by time (fastest first)
+      leaderboard.sort((a, b) => a.time - b.time);
+    } else {
+      // Default sample records
+      leaderboard = [
+        { name: 'ANKIT', time: 14.8, score: 22, date: 'Recent' },
+        { name: 'PRO_PLAYER', time: 19.5, score: 28, date: 'Recent' },
+        { name: 'CHAMPION', time: 24.2, score: 30, date: 'Recent' }
+      ];
     }
   } catch (e) {
     console.error(e);
   }
 }
 
-function saveStats() {
+function saveLeaderboard() {
   try {
-    localStorage.setItem('hand_maze_stats', JSON.stringify(stats));
+    localStorage.setItem('hand_maze_leaderboard', JSON.stringify(leaderboard));
   } catch (e) {
     console.error(e);
   }
 }
 
+function getBestTime() {
+  if (leaderboard.length > 0) {
+    return leaderboard[0].time;
+  }
+  return null;
+}
+
+// Confetti & Sparkles Particle System
+class ConfettiParticle {
+  constructor(w, h, burst = false) {
+    this.w_bounds = w;
+    this.h_bounds = h;
+    this.reset(burst);
+  }
+
+  reset(burst = false) {
+    this.x = burst ? this.w_bounds / 2 + (Math.random() * 200 - 100) : Math.random() * this.w_bounds;
+    this.y = burst ? this.h_bounds / 2 + (Math.random() * 100 - 50) : Math.random() * -this.h_bounds;
+    this.size = Math.random() * 8 + 5;
+    this.vx = (Math.random() - 0.5) * (burst ? 8 : 3);
+    this.vy = burst ? -(Math.random() * 6 + 4) : Math.random() * 3 + 2.5;
+    this.rot = Math.random() * 360;
+    this.vrot = (Math.random() - 0.5) * 10;
+    this.colors = ['#2ecc71', '#3498db', '#e74c3c', '#f1c40f', '#9b59b6', '#e67e22', '#1abc9c'];
+    this.color = this.colors[Math.floor(Math.random() * this.colors.length)];
+    this.shape = Math.random() > 0.4 ? 'rect' : (Math.random() > 0.5 ? 'circle' : 'star');
+  }
+
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    this.rot += this.vrot;
+    this.vy += 0.08; // gravity
+
+    if (this.y > this.h_bounds) {
+      this.reset(false);
+    }
+  }
+
+  draw(cCtx) {
+    cCtx.save();
+    cCtx.translate(this.x, this.y);
+    cCtx.rotate((this.rot * Math.PI) / 180);
+    cCtx.fillStyle = this.color;
+
+    if (this.shape === 'rect') {
+      cCtx.fillRect(-this.size / 2, -this.size / 4, this.size, this.size / 2);
+    } else if (this.shape === 'circle') {
+      cCtx.beginPath();
+      cCtx.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+      cCtx.fill();
+    } else {
+      // Star sparkle
+      cCtx.beginPath();
+      for (let i = 0; i < 5; i++) {
+        cCtx.lineTo(Math.cos((18 + i * 72) * 0.01745) * this.size, -Math.sin((18 + i * 72) * 0.01745) * this.size);
+        cCtx.lineTo(Math.cos((54 + i * 72) * 0.01745) * (this.size / 2), -Math.sin((54 + i * 72) * 0.01745) * (this.size / 2));
+      }
+      cCtx.closePath();
+      cCtx.fill();
+    }
+    cCtx.restore();
+  }
+}
+
+let confettiPool = [];
+function initConfetti(count = 90) {
+  confettiPool = [];
+  for (let i = 0; i < count; i++) {
+    confettiPool.push(new ConfettiParticle(CONFIG.CAMERA_WIDTH, CONFIG.CAMERA_HEIGHT, true));
+  }
+}
+
+function updateAndDrawConfetti(cCtx) {
+  for (const p of confettiPool) {
+    p.update();
+    p.draw(cCtx);
+  }
+}
+
+// ── Fullscreen Support ──────────────────────────────────────────────────────
+
+function toggleFullscreen() {
+  const elem = document.documentElement;
+  if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().catch(err => console.log('Fullscreen error:', err));
+    } else if (elem.webkitRequestFullscreen) {
+      elem.webkitRequestFullscreen();
+    } else if (elem.mozRequestFullScreen) {
+      elem.mozRequestFullScreen();
+    } else if (elem.msRequestFullscreen) {
+      elem.msRequestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen().catch(err => console.log('Exit fullscreen error:', err));
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  }
+}
+
+// ── App Init ────────────────────────────────────────────────────────────────
+
 async function init() {
-  loadStats();
+  loadLeaderboard();
 
   video = document.getElementById('webcam');
   canvas = document.getElementById('output_canvas');
@@ -127,7 +241,6 @@ function setupButtons() {
     playerName = inputVal;
     document.getElementById('menu-player-name').innerText = playerName.toUpperCase();
     document.getElementById('hud-player').innerText = playerName.toUpperCase();
-    document.getElementById('hs-player').innerText = playerName.toUpperCase();
     switchState('MENU');
   };
 
@@ -161,11 +274,7 @@ function setupButtons() {
   };
   
   document.getElementById('opt-fs').onclick = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => console.log(err));
-    } else {
-      document.exitFullscreen().catch(err => console.log(err));
-    }
+    toggleFullscreen();
   };
 
   document.getElementById('opt-op-plus').onclick = () => {
@@ -185,6 +294,8 @@ function setupKeyboard() {
       if (gameState === 'GAME') {
         resetGame();
       }
+    } else if (e.key === 'f' || e.key === 'F') {
+      toggleFullscreen();
     } else if (e.key === 'Escape') {
       if (gameState === 'LOGIN') switchState('START');
       else if (gameState === 'MENU') switchState('LOGIN');
@@ -216,10 +327,36 @@ function setupKeyboard() {
 }
 
 function updateHighScoresScreen() {
-  document.getElementById('hs-player').innerText = playerName.toUpperCase();
-  document.getElementById('hs-score').innerText = stats.bestScore;
-  document.getElementById('hs-time').innerText = stats.bestTime ? stats.bestTime.toFixed(1) + 's' : '--';
-  document.getElementById('hs-games').innerText = stats.gamesPlayed;
+  const tbody = document.getElementById('leaderboard-rows');
+  tbody.innerHTML = '';
+
+  // Sort by lowest time
+  leaderboard.sort((a, b) => a.time - b.time);
+
+  if (leaderboard.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 20px; color:#888;">No games completed yet. Be the first!</td></tr>';
+    return;
+  }
+
+  leaderboard.slice(0, 8).forEach((item, index) => {
+    const tr = document.createElement('tr');
+    let rankBadgeClass = 'rank-badge';
+    let medal = `${index + 1}`;
+    if (index === 0) { rankBadgeClass += ' rank-1'; medal = '🥇 1'; }
+    else if (index === 1) { rankBadgeClass += ' rank-2'; medal = '🥈 2'; }
+    else if (index === 2) { rankBadgeClass += ' rank-3'; medal = '🥉 3'; }
+
+    const isCurrent = item.name.toUpperCase() === playerName.toUpperCase();
+    if (isCurrent) tr.style.background = 'rgba(46, 204, 113, 0.08)';
+
+    tr.innerHTML = `
+      <td><span class="${rankBadgeClass}">${medal}</span></td>
+      <td><strong>${item.name.toUpperCase()}</strong> ${isCurrent ? '<span style="font-size:0.75rem; color:#2ecc71;">(You)</span>' : ''}</td>
+      <td class="green-text" style="font-weight:800;">${item.time.toFixed(1)}s ${index === 0 ? '⚡ (FASTEST)' : ''}</td>
+      <td style="color:#888; font-size:0.85rem;">${item.date || 'Today'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 function switchState(newState) {
@@ -242,7 +379,10 @@ function switchState(newState) {
   else if (newState === 'MENU') document.getElementById('screen-menu').classList.add('active');
   else if (newState === 'HOW_TO_PLAY') document.getElementById('screen-how-to-play').classList.add('active');
   else if (newState === 'HIGH_SCORES') document.getElementById('screen-high-scores').classList.add('active');
-  else if (newState === 'WIN') document.getElementById('screen-win').classList.add('active');
+  else if (newState === 'WIN') {
+    document.getElementById('screen-win').classList.add('active');
+    initConfetti(100);
+  }
   else if (newState === 'GAME') document.getElementById('screen-game').classList.add('active');
 }
 
@@ -257,8 +397,9 @@ function resetGame() {
 
 function updateHUD() {
   document.getElementById('hud-score').innerText = score;
-  document.getElementById('hud-best').innerText = stats.bestTime ? stats.bestTime.toFixed(1) + 's' : '--';
-  document.querySelector('.opt-status').innerHTML = `Opacity: ${Math.round(camOpacity * 100)}%<br>CAM: ${isCamOn ? 'ON' : 'OFF'}`;
+  const best = getBestTime();
+  document.getElementById('hud-best').innerText = best ? best.toFixed(1) + 's' : '--';
+  document.querySelector('.opt-status').innerHTML = `Opacity: ${Math.round(camOpacity * 100)}%<br>USER PREVIEW: ${isCamOn ? 'ON' : 'OFF'}`;
 }
 
 function movePlayerTo(targetCell) {
@@ -282,15 +423,32 @@ function movePlayerTo(targetCell) {
 
 function handleWin() {
   const finalTimeSec = startTime ? (performance.now() - startTime) / 1000 : 0;
-  stats.gamesPlayed++;
-  if (score > stats.bestScore) stats.bestScore = score;
-  if (!stats.bestTime || finalTimeSec < stats.bestTime) stats.bestTime = finalTimeSec;
-  saveStats();
+  const prevBest = getBestTime();
+  const isNewRecord = !prevBest || finalTimeSec < prevBest;
 
-  document.getElementById('win-score').innerText = score;
+  // Add record to leaderboard
+  const now = new Date();
+  const dateStr = `${now.getMonth() + 1}/${now.getDate()}`;
+  leaderboard.push({
+    name: playerName.toUpperCase(),
+    time: finalTimeSec,
+    score: score,
+    date: dateStr
+  });
+  leaderboard.sort((a, b) => a.time - b.time);
+  saveLeaderboard();
+
+  // Display Win Board details
   const m = String(Math.floor(finalTimeSec / 60)).padStart(2, '0');
   const s = String(Math.floor(finalTimeSec % 60)).padStart(2, '0');
   document.getElementById('win-time').innerText = `${m}:${s} (${finalTimeSec.toFixed(1)}s)`;
+  document.getElementById('win-best-time').innerText = leaderboard[0].time.toFixed(1) + 's';
+  document.getElementById('win-score').innerText = score;
+
+  const recordBadge = document.getElementById('win-new-record');
+  if (recordBadge) {
+    recordBadge.style.display = isNewRecord ? 'inline-block' : 'none';
+  }
 
   switchState('WIN');
 }
@@ -334,7 +492,6 @@ function updateGestureButtons(handPos, pinchActive) {
   // Update hover and progress
   if (currentlyHovered && pinchActive) {
     if (activeHoverBtn !== currentlyHovered) {
-      // Switched to a new button
       if (activeHoverBtn) {
         const oldProg = activeHoverBtn.querySelector('.btn-progress');
         if (oldProg) oldProg.style.width = '0%';
@@ -386,6 +543,11 @@ function gameLoop() {
     ctx.scale(-1, 1);
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     ctx.restore();
+  }
+
+  // Draw Win screen celebratory sparkling confetti
+  if (gameState === 'WIN') {
+    updateAndDrawConfetti(cursorCtx);
   }
 
   // Draw maze & HUD time in game mode
