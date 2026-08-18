@@ -13,6 +13,27 @@
       <canvas id="output_canvas"></canvas>
       <canvas id="cursor_canvas"></canvas>
       
+      <!-- Top-left viewport screen tag -->
+      <div class="viewport-screen-tag" id="viewport-tag">START SCREEN</div>
+
+      <!-- Decorative Background Elements (Waves, Orbs, Corner Dots) -->
+      <div class="bg-decorations" id="bg-decorations">
+        <!-- Top Right Dot Grid -->
+        <div class="corner-dots top-right"></div>
+        <!-- Bottom Left Dot Grid -->
+        <div class="corner-dots bottom-left"></div>
+        <!-- Blurred Orbs -->
+        <div class="bg-orb orb-left"></div>
+        <div class="bg-orb orb-right"></div>
+        <!-- Flowing Blue Wave Lines SVG -->
+        <svg class="bg-waves-svg" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-100 550 C 300 650, 600 350, 1000 450 C 1200 500, 1400 350, 1600 400" stroke="rgba(59, 130, 246, 0.15)" stroke-width="2"/>
+          <path d="M-100 580 C 300 680, 600 380, 1000 480 C 1200 530, 1400 380, 1600 430" stroke="rgba(59, 130, 246, 0.12)" stroke-width="1.5"/>
+          <path d="M-100 610 C 300 710, 600 410, 1000 510 C 1200 560, 1400 410, 1600 460" stroke="rgba(59, 130, 246, 0.08)" stroke-width="1.5"/>
+          <path d="M-100 300 C 400 200, 700 450, 1100 250 C 1300 150, 1500 220, 1600 250" stroke="rgba(99, 102, 241, 0.1)" stroke-width="1.5"/>
+        </svg>
+      </div>
+
       <div id="ui-layer">
         <!-- Start Screen (Matches exact uploaded design) -->
         <div id="screen-start" class="screen start-screen-card active">

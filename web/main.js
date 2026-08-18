@@ -437,22 +437,49 @@ function switchState(newState) {
   activeHoverBtn = null;
   hoverStartTime = null;
 
-  if (newState === 'START') document.getElementById('screen-start').classList.add('active');
+  const vpTag = document.getElementById('viewport-tag');
+  const bgDecors = document.getElementById('bg-decorations');
+
+  if (newState === 'START') {
+    document.getElementById('screen-start').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'START SCREEN'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'block';
+  }
   else if (newState === 'LOGIN') {
     document.getElementById('screen-login').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'NAME ENTRY'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'block';
     setTimeout(() => {
       const inp = document.getElementById('player-name');
       if (inp) inp.focus();
     }, 100);
   }
-  else if (newState === 'MENU') document.getElementById('screen-menu').classList.add('active');
-  else if (newState === 'HOW_TO_PLAY') document.getElementById('screen-how-to-play').classList.add('active');
-  else if (newState === 'HIGH_SCORES') document.getElementById('screen-high-scores').classList.add('active');
+  else if (newState === 'MENU') {
+    document.getElementById('screen-menu').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'MAIN MENU'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'block';
+  }
+  else if (newState === 'HOW_TO_PLAY') {
+    document.getElementById('screen-how-to-play').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'HOW TO PLAY'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'block';
+  }
+  else if (newState === 'HIGH_SCORES') {
+    document.getElementById('screen-high-scores').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'LEADERBOARD'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'block';
+  }
   else if (newState === 'WIN') {
     document.getElementById('screen-win').classList.add('active');
+    if (vpTag) { vpTag.innerText = 'YOU WIN SCREEN'; vpTag.style.display = 'block'; }
+    if (bgDecors) bgDecors.style.display = 'none';
     initConfetti(100);
   }
-  else if (newState === 'GAME') document.getElementById('screen-game').classList.add('active');
+  else if (newState === 'GAME') {
+    document.getElementById('screen-game').classList.add('active');
+    if (vpTag) vpTag.style.display = 'none';
+    if (bgDecors) bgDecors.style.display = 'none';
+  }
 }
 
 function resetGame() {

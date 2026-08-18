@@ -7,11 +7,12 @@
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background-color: #f8f9fa;
+  background-color: #fcfdfe;
   color: #2d2823;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
+  position: relative;
 }
 
 body.app-full-screen,
@@ -24,14 +25,89 @@ body.app-full-screen #app {
   margin: 0 !important;
   padding: 0 !important;
   z-index: 999999 !important;
-  background-color: #f8f9fa !important;
+  background-color: #fcfdfe !important;
 }
 
 #app {
   position: relative;
   width: 100%;
   height: 100%;
-  background: url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1" fill="%23ddd"/></svg>') repeat;
+  background: #fcfdfe;
+  overflow: hidden;
+}
+
+/* Viewport Top-Left Screen Tag */
+.viewport-screen-tag {
+  position: absolute;
+  top: 25px;
+  left: 35px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #475569;
+  letter-spacing: 1.2px;
+  z-index: 15;
+  pointer-events: none;
+}
+
+/* Background Decorations (Waves, Corner Dots, Orbs) */
+.bg-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.bg-waves-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  object-fit: cover;
+  opacity: 0.85;
+}
+
+.corner-dots {
+  position: absolute;
+  width: 120px;
+  height: 80px;
+  background-image: radial-gradient(#cbd5e1 2px, transparent 2px);
+  background-size: 20px 20px;
+  opacity: 0.8;
+}
+.corner-dots.top-right {
+  top: 35px;
+  right: 40px;
+}
+.corner-dots.bottom-left {
+  bottom: 35px;
+  left: 40px;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.35;
+}
+.orb-left {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #bfdbfe 0%, #dbeafe 100%);
+  top: 40%;
+  left: -80px;
+  transform: translateY(-50%);
+}
+.orb-right {
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, #e0e7ff 0%, #ede9fe 100%);
+  top: 15%;
+  right: 8%;
 }
 
 #output_canvas {
