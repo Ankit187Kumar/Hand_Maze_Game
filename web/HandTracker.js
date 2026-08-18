@@ -3,7 +3,7 @@ import { HandLandmarker, FilesetResolver } from '@mediapipe/tasks-vision';
 export class HandTracker {
   constructor() {
     this.handLandmarker = null;
-    this.pinchThreshold = 0.05;
+    this.pinchThreshold = 0.08;
     this.smoothingFactor = 0.4;
     this.prevPos = null;
   }

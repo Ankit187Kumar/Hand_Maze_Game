@@ -223,9 +223,10 @@ function updateAndDrawConfetti(cCtx) {
 function toggleFullscreen() {
   const isFull = document.body.classList.toggle('app-full-screen');
   const fsBtn = document.getElementById('opt-fs');
-  if (fsBtn) {
-    fsBtn.innerText = isFull ? 'WINDOWED' : 'FULLSCREEN';
-  }
+  const globalFsBtn = document.getElementById('btn-global-fs');
+  const label = isFull ? '🗗 WINDOWED' : '⛶ FULLSCREEN';
+  if (fsBtn) fsBtn.innerText = isFull ? 'WINDOWED' : 'FULLSCREEN';
+  if (globalFsBtn) globalFsBtn.innerText = label;
 
   const elem = document.documentElement;
   // Try native browser fullscreen if allowed by user activation
@@ -334,6 +335,12 @@ function setupButtons() {
 
   document.getElementById('btn-win-menu').onclick = () => switchState('MENU');
   
+  // Global Top-Right Fullscreen Button
+  const globalFs = document.getElementById('btn-global-fs');
+  if (globalFs) {
+    globalFs.onclick = () => toggleFullscreen();
+  }
+
   // Options Panel Buttons
   document.getElementById('opt-cam').onclick = () => {
     isCamOn = !isCamOn;
@@ -571,11 +578,8 @@ function updateGestureButtons(handPos, pinchActive) {
   const screenX = (handPos.x / canvas.width) * window.innerWidth;
   const screenY = (handPos.y / canvas.height) * window.innerHeight;
 
-  // Check interactive elements on active screen or options panel
-  const activeContainer = document.querySelector('.screen.active') || document.querySelector('.game-hud.active');
-  if (!activeContainer) return;
-
-  const buttons = Array.from(activeContainer.querySelectorAll('.btn, .opt-btn'));
+  // Find all active interactive buttons on screen (including global fullscreen button)
+  const buttons = Array.from(document.querySelectorAll('.screen.active .btn, .game-hud.active .opt-btn, #btn-global-fs'));
   let currentlyHovered = null;
 
   for (const btn of buttons) {
@@ -592,13 +596,13 @@ function updateGestureButtons(handPos, pinchActive) {
     if (nameInp) {
       const iRect = nameInp.getBoundingClientRect();
       if (screenX >= iRect.left && screenX <= iRect.right && screenY >= iRect.top && screenY <= iRect.bottom) {
-        if (pinchActive) nameInp.focus();
+        nameInp.focus();
       }
     }
   }
 
-  // Update hover and progress
-  if (currentlyHovered && pinchActive) {
+  // Update hover and progress (allow both pinch OR steady hover dwell!)
+  if (currentlyHovered) {
     if (activeHoverBtn !== currentlyHovered) {
       if (activeHoverBtn) {
         const oldProg = activeHoverBtn.querySelector('.btn-progress');
@@ -609,7 +613,9 @@ function updateGestureButtons(handPos, pinchActive) {
     }
 
     const elapsed = now - hoverStartTime;
-    const progress = Math.min(1.0, elapsed / GESTURE_DWELL_MS);
+    // Pinch fills faster (500ms), hover dwell fills in (850ms)
+    const requiredTime = pinchActive ? 500 : 850;
+    const progress = Math.min(1.0, elapsed / requiredTime);
 
     const progEl = currentlyHovered.querySelector('.btn-progress');
     if (progEl) {
@@ -621,11 +627,11 @@ function updateGestureButtons(handPos, pinchActive) {
       if (progEl) progEl.style.width = '0%';
       hoverStartTime = null;
       activeHoverBtn = null;
-      gestureCooldownUntil = now + 600; // Cooldown to avoid double clicks
+      gestureCooldownUntil = now + 700; // Cooldown to avoid double clicks
       currentlyHovered.click();
     }
   } else {
-    // Not pinching or not hovering on any button
+    // Not hovering on any button
     if (activeHoverBtn) {
       const progEl = activeHoverBtn.querySelector('.btn-progress');
       if (progEl) progEl.style.width = '0%';
