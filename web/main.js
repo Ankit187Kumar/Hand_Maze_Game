@@ -337,10 +337,6 @@ function setupButtons() {
     isCamOn = !isCamOn;
     updateHUD();
   };
-  
-  document.getElementById('opt-fs').onclick = () => {
-    toggleFullscreen();
-  };
 
   document.getElementById('opt-op-plus').onclick = () => {
     camOpacity = Math.min(1.0, camOpacity + 0.1);
