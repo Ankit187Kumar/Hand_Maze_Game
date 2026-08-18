@@ -69,7 +69,49 @@
             <li><span class="rule-num">3</span> <span class="rule-text purple">Thumb Down to go BACK (ESC).</span></li>
             <li><span class="rule-num">4</span> <span class="rule-text blue">Reach the BLUE cell to win!</span></li>
           </ul>
+          <button class="btn btn-outline" id="btn-back-how" style="margin-top:20px;">&lt; BACK TO MENU</button>
           <div class="footer-text">Thumb Down to GO BACK</div>
+        </div>
+
+        <!-- High Scores -->
+        <div id="screen-high-scores" class="screen">
+          <div class="screen-header">HIGH SCORES</div>
+          <h1 class="title-purple">LEADERBOARD</h1>
+          <div style="margin: 25px 0; width: 100%; max-width: 400px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
+              <span>PLAYER</span><span id="hs-player">ANKIT</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
+              <span>BEST SCORE</span><span class="green-text" id="hs-score">0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; border-bottom: 1px solid #eee; font-weight: bold;">
+              <span>BEST TIME</span><span class="orange-text" id="hs-time">--</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 10px 0; font-weight: bold;">
+              <span>GAMES PLAYED</span><span class="blue-text" id="hs-games">0</span>
+            </div>
+          </div>
+          <button class="btn btn-outline" id="btn-back-hs">&lt; BACK TO MENU</button>
+          <div class="footer-text">Thumb Down to GO BACK</div>
+        </div>
+
+        <!-- Win Screen -->
+        <div id="screen-win" class="screen">
+          <div class="screen-header">YOU WIN SCREEN</div>
+          <h1 class="title-main" style="color:#2ecc71; font-size:3.5rem;">YOU WIN!</h1>
+          <div style="margin: 20px 0; width: 100%; max-width: 400px; text-align: left;">
+            <div style="display:flex; justify-content:space-between; padding: 8px 0; font-size:1.2rem; font-weight: bold;">
+              <span>FINAL SCORE</span><span class="green-text" id="win-score">0</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding: 8px 0; font-size:1.2rem; font-weight: bold;">
+              <span>TIME TAKEN</span><span class="orange-text" id="win-time">00:00</span>
+            </div>
+          </div>
+          <div class="btn-row" style="margin-top: 15px; width: 100%; max-width: 400px;">
+            <button class="btn btn-outline" id="btn-play-again" style="flex:1;">@ PLAY AGAIN</button>
+            <button class="btn btn-red" id="btn-win-menu" style="flex:1;">~ MAIN MENU</button>
+          </div>
+          <div class="footer-text">[ SPACE ] Play Again | Thumb Down MENU</div>
         </div>
 
         <!-- Game HUD -->
